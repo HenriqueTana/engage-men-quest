@@ -23,7 +23,7 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
   const [currentNodeId, setCurrentNodeId] = useState<number>(initialNode);
   const [isTyping, setIsTyping] = useState(false);
   const [displayedText, setDisplayedText] = useState('');
-  const [typingSpeed] = useState(15); // Reduzido para 15ms por caractere para tornar mais rápido
+  const [typingSpeed] = useState(30); // ms per character
   
   const currentNode = storyNodes[currentNodeId];
   
@@ -42,21 +42,11 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
       } else {
         clearInterval(typeInterval);
         setIsTyping(false);
-        
-        // Se o nó atual for 19, desbloquear automaticamente a missão 10
-        if (currentNodeId === 19) {
-          onProgress(undefined, 10);
-        }
-        
-        // Se o nó atual for 21, desbloquear automaticamente a missão 11
-        if (currentNodeId === 21) {
-          onProgress(undefined, 11);
-        }
       }
     }, typingSpeed);
     
     return () => clearInterval(typeInterval);
-  }, [currentNodeId, open, currentNode, onProgress]);
+  }, [currentNodeId, open, currentNode]);
   
   const handleChoice = (choice: StoryNode['choices'][0]) => {
     // Process effects
@@ -80,15 +70,6 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
     setCurrentNodeId(choice.nextNode);
   };
   
-  const skipToNext = () => {
-    // Avançar para o nó 19 para desbloquear missões do psicólogo
-    setCurrentNodeId(19);
-    onProgress(100); // Dar 100 pontos para o jogador
-    toast.success("+100 pontos", {
-      description: "Você avançou na história!"
-    });
-  };
-  
   const handleEndStory = () => {
     onClose();
     toast.info("Fim deste capítulo da história", {
@@ -103,18 +84,8 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
       <DialogContent className="sm:max-w-[500px] bg-card border-hero-secondary/30">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Sua Jornada</DialogTitle>
-          <DialogDescription className="flex justify-between items-center">
+          <DialogDescription>
             Capítulo {currentNodeId}
-            {currentNodeId < 19 && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="text-xs"
-                onClick={skipToNext}
-              >
-                Avançar para missões do psicólogo
-              </Button>
-            )}
           </DialogDescription>
         </DialogHeader>
         

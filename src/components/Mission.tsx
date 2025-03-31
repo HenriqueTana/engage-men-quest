@@ -1,14 +1,14 @@
 
 import React, { useState } from 'react';
-import { type Mission as MissionType } from '../utils/gameData';
+import { Mission } from '../utils/gameData';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle, Clock, BarChart, Lightbulb, Award, ExternalLink } from 'lucide-react';
+import { CheckCircle, Clock, BarChart, Lightbulb, Award } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface MissionProps {
-  mission: MissionType;
+  mission: Mission;
   onComplete: (missionId: number, points: number) => void;
   completed: boolean;
 }
@@ -18,19 +18,11 @@ const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed }) => 
   const [isExpanded, setIsExpanded] = useState(false);
   
   const handleComplete = () => {
-    if (mission.type === 'reflection' && reflection.trim().length < 10 && mission.id !== 10 && mission.id !== 11) {
+    if (mission.type === 'reflection' && reflection.trim().length < 10) {
       toast.error("Sua reflexão é muito curta", {
         description: "Por favor, dedique um pouco mais de tempo a esta reflexão."
       });
       return;
-    }
-    
-    // Se for uma das missões especiais do psicólogo (10 ou 11), completar automaticamente
-    if (mission.id === 10 || mission.id === 11) {
-      toast.success("Missão importante completada!", {
-        description: "Você deu um passo importante na sua jornada de autoconhecimento.",
-        icon: <Award className="h-5 w-5" />
-      });
     }
     
     onComplete(mission.id, mission.points);
@@ -61,9 +53,6 @@ const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed }) => 
         return <BarChart className="h-5 w-5 text-purple-400" />;
     }
   };
-
-  // Verificar se é a missão especial (id 11) que deveria mostrar um link 
-  const isSpecialMission = mission.id === 11;
 
   return (
     <Card className={`border-hero-secondary/30 bg-card shadow-lg transition-all duration-300 overflow-hidden ${
@@ -110,24 +99,12 @@ const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed }) => 
               {isExpanded ? "Minimizar" : "Expandir"}
             </Button>
             {isExpanded && (
-              <>
-                {isSpecialMission ? (
-                  <Button 
-                    className="hero-button flex items-center gap-2"
-                    onClick={handleComplete}
-                  >
-                    Completar Missão
-                    <ExternalLink className="h-4 w-4" />
-                  </Button>
-                ) : (
-                  <Button 
-                    className="hero-button"
-                    onClick={handleComplete}
-                  >
-                    Completar Missão
-                  </Button>
-                )}
-              </>
+              <Button 
+                className="hero-button"
+                onClick={handleComplete}
+              >
+                Completar Missão
+              </Button>
             )}
           </>
         ) : (
