@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Mission } from '../utils/gameData';
+import { type Mission as MissionType } from '../utils/gameData';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,7 +8,7 @@ import { CheckCircle, Clock, BarChart, Lightbulb, Award } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface MissionProps {
-  mission: Mission;
+  mission: MissionType;
   onComplete: (missionId: number, points: number) => void;
   completed: boolean;
 }
