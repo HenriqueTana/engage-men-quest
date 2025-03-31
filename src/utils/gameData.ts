@@ -1,4 +1,3 @@
-
 export interface Question {
   id: number;
   text: string;
@@ -53,6 +52,7 @@ export interface StoryNode {
       heroType?: string;
       missionUnlock?: number;
     };
+    isEnding?: boolean;
   }[];
   isEnding?: boolean;
 }
