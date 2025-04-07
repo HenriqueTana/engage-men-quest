@@ -4,6 +4,7 @@ import { StoryNode } from '../utils/gameData';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from 'sonner';
+import { FastForward } from 'lucide-react';
 
 interface StoryDialogProps {
   storyNodes: { [key: number]: StoryNode };
@@ -23,7 +24,7 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
   const [currentNodeId, setCurrentNodeId] = useState<number>(initialNode);
   const [isTyping, setIsTyping] = useState(false);
   const [displayedText, setDisplayedText] = useState('');
-  const [typingSpeed] = useState(30); // ms per character
+  const [typingSpeed, setTypingSpeed] = useState(30); // ms per character
   
   const currentNode = storyNodes[currentNodeId];
   
@@ -46,7 +47,7 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
     }, typingSpeed);
     
     return () => clearInterval(typeInterval);
-  }, [currentNodeId, open, currentNode]);
+  }, [currentNodeId, open, currentNode, typingSpeed]);
   
   const handleChoice = (choice: StoryNode['choices'][0]) => {
     // Process effects
@@ -76,6 +77,15 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
       description: "Continue completando missões para desbloquear mais."
     });
   };
+
+  const handleSpeedUp = () => {
+    setTypingSpeed(5); // Speed up the typing
+    if (isTyping) {
+      // If currently typing, show the full text immediately
+      setDisplayedText(currentNode.text);
+      setIsTyping(false);
+    }
+  };
   
   if (!currentNode) return null;
 
@@ -85,7 +95,17 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Sua Jornada</DialogTitle>
           <DialogDescription>
-            Capítulo {currentNodeId}
+            <div className="flex justify-between items-center">
+              <span>Capítulo {currentNodeId}</span>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                onClick={handleSpeedUp} 
+                className="h-8 w-8"
+              >
+                <FastForward className="h-4 w-4" />
+              </Button>
+            </div>
           </DialogDescription>
         </DialogHeader>
         
@@ -102,7 +122,12 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
                 className="w-full justify-start text-left h-auto py-3 border-hero-secondary/20 hover:bg-hero-primary/10 hover:border-hero-primary transition-all"
                 onClick={() => handleChoice(choice)}
               >
-                {choice.text}
+                <div>
+                  <div className="font-medium">{choice.text}</div>
+                  {choice.effect && choice.effect.points && (
+                    <div className="text-xs text-hero-primary mt-1">+{choice.effect.points} pontos</div>
+                  )}
+                </div>
               </Button>
             ))}
             

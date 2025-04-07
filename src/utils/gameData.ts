@@ -219,6 +219,60 @@ export const missions: Mission[] = [
     points: 15,
     requiredHeroTypes: ["explorer"],
     completionMessage: "Você expandiu seus horizontes! Todo grande explorador sabe que o crescimento está nas novas experiências."
+  },
+  {
+    id: 6,
+    title: "Meditação Matinal",
+    description: "Dedique 10 minutos pela manhã para meditar e definir suas intenções para o dia.",
+    type: "action",
+    difficulty: "easy",
+    points: 15,
+    completionMessage: "Começar o dia com clareza mental prepara o caminho para conquistas maiores."
+  },
+  {
+    id: 7,
+    title: "Conexões Significativas",
+    description: "Entre em contato com alguém importante em sua vida e tenha uma conversa significativa.",
+    type: "action",
+    difficulty: "medium",
+    points: 20,
+    completionMessage: "As conexões humanas são fundamentais para nosso bem-estar e crescimento pessoal."
+  },
+  {
+    id: 8,
+    title: "Planejamento Estratégico",
+    description: "Elabore um plano para alcançar um objetivo importante em sua vida nos próximos 3 meses.",
+    type: "reflection",
+    difficulty: "hard",
+    points: 30,
+    completionMessage: "Um bom planejamento é o primeiro passo para transformar sonhos em realidade."
+  },
+  {
+    id: 9,
+    title: "Autoconhecimento Emocional",
+    description: "Identifique três situações recentes que desencadearam emoções intensas e reflita sobre o porquê.",
+    type: "reflection",
+    difficulty: "medium",
+    points: 25,
+    completionMessage: "Entender suas emoções é essencial para desenvolver inteligência emocional."
+  },
+  {
+    id: 10,
+    title: "Avaliação de Saúde Mental",
+    description: "Complete o questionário de autoavaliação emocional para identificar áreas que precisam de atenção.",
+    type: "challenge",
+    difficulty: "medium",
+    points: 30,
+    completionMessage: "Cuidar da saúde mental é tão importante quanto cuidar da saúde física."
+  },
+  {
+    id: 11,
+    title: "Consulta Profissional",
+    description: "Agende uma consulta com um profissional de saúde mental para uma avaliação completa.",
+    type: "action",
+    difficulty: "hard",
+    points: 40,
+    completionMessage: "Buscar ajuda profissional é um sinal de força e autocuidado."
   }
 ];
 
@@ -262,6 +316,26 @@ export const badges: Badge[] = [
     requirement: {
       type: "points",
       value: 100
+    }
+  },
+  {
+    id: "mental-health",
+    name: "Guardião Mental",
+    description: "Completou a avaliação de saúde emocional",
+    imageClass: "bg-green-600",
+    requirement: {
+      type: "specific-mission",
+      value: "10"
+    }
+  },
+  {
+    id: "professional",
+    name: "Busca Profissional",
+    description: "Buscou ajuda profissional para sua saúde mental",
+    imageClass: "bg-blue-700",
+    requirement: {
+      type: "specific-mission",
+      value: "11"
     }
   }
 ];
@@ -358,8 +432,7 @@ export const storyNodes: { [key: number]: StoryNode } = {
       {
         id: 2,
         text: "Deixar a presença ir embora",
-        nextNode: 8,
-        isEnding: true
+        nextNode: 8
       }
     ]
   },
@@ -415,6 +488,59 @@ export const storyNodes: { [key: number]: StoryNode } = {
   10: {
     id: 10,
     text: "A voz parece satisfeita. 'Excelente! Agora, sua próxima missão aguarda. Lembre-se: sua jornada é única, suas escolhas definem seu caminho. E este é apenas o começo...'",
+    isEnding: true
+  },
+  11: {
+    id: 11,
+    text: "Enquanto avança em sua jornada, você percebe que seu desenvolvimento como herói também está conectado com sua saúde emocional. 'Um herói completo cuida tanto do corpo quanto da mente', sussurra a voz.",
+    choices: [
+      {
+        id: 1,
+        text: "Explorar mais sobre sua saúde emocional",
+        nextNode: 12,
+        effect: {
+          missionUnlock: 10
+        }
+      },
+      {
+        id: 2,
+        text: "Focar primeiro em desenvolver suas habilidades heroicas",
+        nextNode: 13
+      }
+    ]
+  },
+  12: {
+    id: 12,
+    text: "Você decide que compreender sua saúde emocional é uma parte importante da sua jornada heroica. A voz aprova: 'Autoconhecimento é o caminho para a verdadeira força. Há recursos que podem te ajudar nesta parte da jornada.'",
+    choices: [
+      {
+        id: 1,
+        text: "Buscar ajuda profissional para melhor compreensão",
+        nextNode: 14,
+        effect: {
+          points: 25,
+          missionUnlock: 11
+        }
+      }
+    ]
+  },
+  13: {
+    id: 13,
+    text: "Você decide focar primeiro em suas habilidades heroicas, mas percebe que suas emoções às vezes interferem em seu progresso. A voz gentilmente sugere: 'Talvez seja o momento de olhar para dentro também.'",
+    choices: [
+      {
+        id: 1,
+        text: "Concordar e explorar sua saúde emocional",
+        nextNode: 12,
+        effect: {
+          missionUnlock: 10
+        }
+      }
+    ]
+  },
+  14: {
+    id: 14,
+    text: "Ao decidir buscar ajuda profissional, você sente uma sensação de alívio. A voz diz: 'Esta é uma das decisões mais corajosas que um herói pode tomar. Cuidar da mente é fundamental para seu sucesso em todas as áreas.'",
     isEnding: true
   }
 };
