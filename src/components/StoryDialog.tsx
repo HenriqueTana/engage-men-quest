@@ -4,7 +4,7 @@ import { StoryNode } from '../utils/gameData';
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from 'sonner';
-import { FastForward } from 'lucide-react';
+import { FastForward, Brain } from 'lucide-react';
 
 interface StoryDialogProps {
   storyNodes: { [key: number]: StoryNode };
@@ -75,6 +75,20 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
     onClose();
     toast.info("Fim deste capítulo da história", {
       description: "Continue completando missões para desbloquear mais."
+    });
+    
+    // Recommend emotional health assessment after story completion
+    toast.success("Que tal fazer uma avaliação emocional?", {
+      description: "Descubra mais sobre sua saúde mental agora.",
+      icon: <Brain className="h-5 w-5" />,
+      action: {
+        label: "Fazer avaliação",
+        onClick: () => {
+          // This action will be handled in Index.tsx when the toast is clicked
+          document.dispatchEvent(new CustomEvent('navigateToEmotionalHealth'));
+        },
+      },
+      duration: 8000, // Give the user more time to see this suggestion
     });
   };
 

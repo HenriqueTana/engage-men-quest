@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Quiz from '@/components/Quiz';
 import Mission from '@/components/Mission';
@@ -67,6 +66,17 @@ const Index = () => {
     if (savedPoints) setPoints(parseInt(savedPoints));
     if (savedCompletedMissions) setCompletedMissions(JSON.parse(savedCompletedMissions));
     if (savedStoryNode) setStoryNodeId(parseInt(savedStoryNode));
+    
+    // Setup event listener for emotional health navigation
+    const handleNavigateToEmotionalHealth = () => {
+      setCurrentView('psych');
+    };
+    
+    document.addEventListener('navigateToEmotionalHealth', handleNavigateToEmotionalHealth);
+    
+    return () => {
+      document.removeEventListener('navigateToEmotionalHealth', handleNavigateToEmotionalHealth);
+    };
   }, []);
   
   // Save game state when it changes
@@ -103,10 +113,7 @@ const Index = () => {
       description: "Você ganhou pontos pelo seu autoconhecimento emocional."
     });
     
-    // After a delay, return to main view
-    setTimeout(() => {
-      setCurrentView('main');
-    }, 5000);
+    // The return to main view is now handled by a button click instead of automatically
   };
   
   // Handle story progression
@@ -177,7 +184,10 @@ const Index = () => {
                 Complete este questionário para ajudar a identificar aspectos da sua saúde emocional que podem necessitar de atenção.
               </p>
             </div>
-            <PsychQuiz onComplete={handlePsychQuizComplete} />
+            <PsychQuiz 
+              onComplete={handlePsychQuizComplete} 
+              onReturnToMain={() => setCurrentView('main')}
+            />
           </div>
         );
       
@@ -245,6 +255,7 @@ const Index = () => {
                           mission={mission}
                           onComplete={handleMissionComplete}
                           completed={completedMissions.includes(mission.id)}
+                          onEmotionalHealthAssessment={() => setCurrentView('psych')}
                         />
                       ))}
                     </div>

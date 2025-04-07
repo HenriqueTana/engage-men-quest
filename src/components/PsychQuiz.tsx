@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { toast } from 'sonner';
-import { CheckIcon, ExternalLinkIcon } from 'lucide-react';
+import { CheckIcon, ExternalLinkIcon, Home } from 'lucide-react';
 
 // Psychological questions
 const psychQuestions = [
@@ -112,9 +112,10 @@ const psychQuestions = [
 
 interface PsychQuizProps {
   onComplete: (points: number) => void;
+  onReturnToMain: () => void;
 }
 
-const PsychQuiz: React.FC<PsychQuizProps> = ({ onComplete }) => {
+const PsychQuiz: React.FC<PsychQuizProps> = ({ onComplete, onReturnToMain }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{[key: number]: string}>({});
   const [completed, setCompleted] = useState(false);
@@ -205,9 +206,16 @@ const PsychQuiz: React.FC<PsychQuizProps> = ({ onComplete }) => {
               </div>
             </div>
             <h3 className="text-2xl font-bold mb-2">Avaliação Concluída</h3>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground mb-6">
               Obrigado por completar esta autoavaliação. Este é um passo importante para o autoconhecimento.
             </p>
+            <Button 
+              className="hero-button"
+              onClick={onReturnToMain}
+            >
+              <Home className="h-4 w-4 mr-2" />
+              Voltar ao Menu Principal
+            </Button>
           </CardContent>
         )}
       </Card>
@@ -236,11 +244,15 @@ const PsychQuiz: React.FC<PsychQuizProps> = ({ onComplete }) => {
             </p>
           </div>
           
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowConsultationDialog(false)}>
-              Talvez mais tarde
+          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+            <Button variant="outline" onClick={() => {
+              setShowConsultationDialog(false);
+              onReturnToMain();
+            }} className="w-full sm:w-auto">
+              <Home className="h-4 w-4 mr-2" />
+              Voltar ao Menu
             </Button>
-            <Button onClick={handleContactPsychologist} className="hero-button">
+            <Button onClick={handleContactPsychologist} className="hero-button w-full sm:w-auto">
               Consultar profissional
               <ExternalLinkIcon className="ml-2 h-4 w-4" />
             </Button>

@@ -4,16 +4,17 @@ import type { Mission as MissionType } from '../utils/gameData';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { CheckCircle, Clock, BarChart, Lightbulb, Award } from 'lucide-react';
+import { CheckCircle, Clock, BarChart, Lightbulb, Award, Brain, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface MissionProps {
   mission: MissionType;
   onComplete: (missionId: number, points: number) => void;
   completed: boolean;
+  onEmotionalHealthAssessment?: () => void;
 }
 
-const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed }) => {
+const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed, onEmotionalHealthAssessment }) => {
   const [reflection, setReflection] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
   
@@ -30,6 +31,25 @@ const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed }) => 
       description: mission.completionMessage,
       icon: <Award className="h-5 w-5" />
     });
+    
+    // Recommend emotional health assessment after completing key missions
+    if (mission.id === 6 || mission.id === 9) {
+      toast.info("Sugestão: Faça uma avaliação de saúde emocional", {
+        description: "Conhecer-se melhor pode ser o próximo passo da sua jornada.",
+        icon: <Brain className="h-5 w-5" />,
+        action: {
+          label: "Fazer avaliação",
+          onClick: () => {
+            if (onEmotionalHealthAssessment) {
+              onEmotionalHealthAssessment();
+            } else {
+              document.dispatchEvent(new CustomEvent('navigateToEmotionalHealth'));
+            }
+          },
+        },
+        duration: 8000,
+      });
+    }
   };
   
   const getDifficultyBadge = () => {
@@ -51,13 +71,21 @@ const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed }) => 
         return <Lightbulb className="h-5 w-5 text-yellow-400" />;
       case 'challenge':
         return <BarChart className="h-5 w-5 text-purple-400" />;
+      case 'emotional':
+        return <Heart className="h-5 w-5 text-red-400" />;
+      default:
+        return <Clock className="h-5 w-5 text-blue-400" />;
     }
   };
+
+  const isEmotionalHealthMission = mission.tags && mission.tags.includes('emotional-health');
 
   return (
     <Card className={`border-hero-secondary/30 bg-card shadow-lg transition-all duration-300 overflow-hidden ${
       completed ? 'border-hero-accent/50 bg-hero-accent/5' : ''
-    } ${isExpanded ? 'scale-105 z-10' : ''}`}>
+    } ${isExpanded ? 'scale-105 z-10' : ''} ${
+      isEmotionalHealthMission ? 'border-l-4 border-l-red-400' : ''
+    }`}>
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
@@ -100,9 +128,10 @@ const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed }) => 
             </Button>
             {isExpanded && (
               <Button 
-                className="hero-button"
+                className={`${isEmotionalHealthMission ? 'bg-red-500 hover:bg-red-600' : 'hero-button'}`}
                 onClick={handleComplete}
               >
+                {isEmotionalHealthMission && <Brain className="h-4 w-4 mr-2" />}
                 Completar Missão
               </Button>
             )}
