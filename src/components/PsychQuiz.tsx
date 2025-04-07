@@ -220,39 +220,39 @@ const PsychQuiz: React.FC<PsychQuizProps> = ({ onComplete, onReturnToMain }) => 
         )}
       </Card>
 
-      {/* Consultation Dialog */}
+      {/* Consultation Dialog - Increased size and text */}
       <Dialog open={showConsultationDialog} onOpenChange={setShowConsultationDialog}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[700px]"> {/* Increased from 500px to 700px */}
           <DialogHeader>
-            <DialogTitle>Consulta com Profissional</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-2xl font-bold">Consulta com Profissional</DialogTitle> {/* Increased from default to text-2xl */}
+            <DialogDescription className="text-lg"> {/* Increased from default to text-lg */}
               Com base nas suas respostas, uma conversa com um profissional de saúde mental poderia trazer benefícios para você.
             </DialogDescription>
           </DialogHeader>
           
-          <div className="py-4">
-            <p className="mb-4">
+          <div className="py-6"> {/* Increased padding from py-4 to py-6 */}
+            <p className="mb-4 text-lg leading-relaxed"> {/* Added text-lg and leading-relaxed */}
               Todos nós enfrentamos desafios emocionais em algum momento da vida. Falar com um psicólogo pode ajudar a:
             </p>
-            <ul className="list-disc pl-5 space-y-2 mb-4">
+            <ul className="list-disc pl-5 space-y-3 mb-5 text-lg"> {/* Increased spacing and added text-lg */}
               <li>Compreender melhor seus pensamentos e sentimentos</li>
               <li>Desenvolver estratégias para lidar com situações difíceis</li>
               <li>Melhorar sua qualidade de vida e bem-estar</li>
             </ul>
-            <p>
+            <p className="text-lg font-medium"> {/* Added text-lg and font-medium */}
               Gostaria de ser direcionado para um site onde pode marcar uma consulta com um psicólogo?
             </p>
           </div>
           
-          <DialogFooter className="flex flex-col sm:flex-row gap-2">
+          <DialogFooter className="flex flex-col sm:flex-row gap-3 pt-4"> {/* Increased gap from 2 to 3 and added pt-4 */}
             <Button variant="outline" onClick={() => {
               setShowConsultationDialog(false);
               onReturnToMain();
-            }} className="w-full sm:w-auto">
+            }} className="w-full sm:w-auto text-base py-3"> {/* Added text-base and py-3 */}
               <Home className="h-4 w-4 mr-2" />
               Voltar ao Menu
             </Button>
-            <Button onClick={handleContactPsychologist} className="hero-button w-full sm:w-auto">
+            <Button onClick={handleContactPsychologist} className="hero-button w-full sm:w-auto text-base py-3"> {/* Added text-base and py-3 */}
               Consultar profissional
               <ExternalLinkIcon className="ml-2 h-4 w-4" />
             </Button>

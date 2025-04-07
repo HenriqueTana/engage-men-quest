@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -42,24 +41,24 @@ const Quiz: React.FC<QuizProps> = ({ onComplete }) => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto">
       {!completed ? (
         <Card className="border-hero-secondary/30 bg-card shadow-lg">
           <CardHeader>
-            <CardTitle className="text-2xl text-center">Descubra Seu Tipo de Herói</CardTitle>
-            <CardDescription className="text-center">
+            <CardTitle className="text-4xl text-center font-bold mb-4">Descubra Seu Tipo de Herói</CardTitle>
+            <CardDescription className="text-xl text-center">
               Questão {currentQuestionIndex + 1} de {quizQuestions.length}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="mb-4">
-              <h3 className="text-xl font-medium mb-4">{currentQuestion.text}</h3>
-              <div className="space-y-3">
+              <h3 className="text-2xl font-medium mb-6">{currentQuestion.text}</h3>
+              <div className="space-y-4">
                 {currentQuestion.options.map((option) => (
                   <Button
                     key={option.id}
                     variant="outline"
-                    className="w-full justify-start text-left h-auto py-4 border-hero-secondary/20 hover:bg-hero-primary/10 hover:border-hero-primary transition-all"
+                    className="w-full justify-start text-left h-auto py-5 text-lg border-hero-secondary/20 hover:bg-hero-primary/10 hover:border-hero-primary transition-all"
                     onClick={() => handleAnswer(currentQuestion.id, option.id)}
                   >
                     {option.text}
@@ -76,11 +75,11 @@ const Quiz: React.FC<QuizProps> = ({ onComplete }) => {
             >
               Anterior
             </Button>
-            <div className="flex gap-1">
+            <div className="flex gap-2">
               {quizQuestions.map((_, index) => (
                 <div 
                   key={index} 
-                  className={`w-3 h-3 rounded-full transition-all ${
+                  className={`w-4 h-4 rounded-full transition-all ${
                     index === currentQuestionIndex ? 'bg-hero-primary scale-125' : 
                     index < currentQuestionIndex ? 'bg-hero-primary/80' : 'bg-muted'
                   }`}

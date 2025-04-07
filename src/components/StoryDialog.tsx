@@ -67,8 +67,15 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
       }
     }
     
-    // Move to next node
-    setCurrentNodeId(choice.nextNode);
+    // Move to next node sequentially instead of jumping to arbitrary nodes
+    // This ensures chapters progress from 1 to 10 in order
+    const nextNodeId = currentNodeId + 1;
+    if (storyNodes[nextNodeId]) {
+      setCurrentNodeId(nextNodeId);
+    } else {
+      // If no next node, this is the end of the story
+      handleEndStory();
+    }
   };
   
   const handleEndStory = () => {
@@ -105,12 +112,12 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent className="sm:max-w-[500px] bg-card border-hero-secondary/30">
+      <DialogContent className="sm:max-w-[700px] bg-card border-hero-secondary/30"> {/* Increased width from 500px to 700px */}
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold">Sua Jornada</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">Sua Jornada</DialogTitle> {/* Increased from text-xl to text-2xl */}
           <DialogDescription>
             <div className="flex justify-between items-center">
-              <span>Capítulo {currentNodeId}</span>
+              <span className="text-lg">Capítulo {currentNodeId}</span> {/* Added text-lg class */}
               <Button 
                 variant="outline" 
                 size="icon" 
@@ -123,23 +130,23 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
           </DialogDescription>
         </DialogHeader>
         
-        <div className="mt-4 mb-6">
-          <p className="text-lg leading-relaxed min-h-[100px]">{displayedText}</p>
+        <div className="mt-6 mb-8"> {/* Increased margins from mt-4 mb-6 to mt-6 mb-8 */}
+          <p className="text-xl leading-relaxed min-h-[150px]">{displayedText}</p> {/* Increased from text-lg to text-xl and min-height from 100px to 150px */}
         </div>
         
         {!isTyping && (
-          <div className="space-y-3">
+          <div className="space-y-4"> {/* Increased from y-3 to y-4 */}
             {currentNode.choices && currentNode.choices.map((choice) => (
               <Button
                 key={choice.id}
                 variant="outline"
-                className="w-full justify-start text-left h-auto py-3 border-hero-secondary/20 hover:bg-hero-primary/10 hover:border-hero-primary transition-all"
+                className="w-full justify-start text-left h-auto py-4 text-lg border-hero-secondary/20 hover:bg-hero-primary/10 hover:border-hero-primary transition-all"
                 onClick={() => handleChoice(choice)}
               >
                 <div>
                   <div className="font-medium">{choice.text}</div>
                   {choice.effect && choice.effect.points && (
-                    <div className="text-xs text-hero-primary mt-1">+{choice.effect.points} pontos</div>
+                    <div className="text-sm text-hero-primary mt-1">+{choice.effect.points} pontos</div> /* Increased from text-xs to text-sm */
                   )}
                 </div>
               </Button>
@@ -147,7 +154,7 @@ const StoryDialog: React.FC<StoryDialogProps> = ({
             
             {currentNode.isEnding && (
               <Button
-                className="hero-button w-full mt-4"
+                className="hero-button w-full mt-4 text-lg py-3" /* Added text-lg and py-3 */
                 onClick={handleEndStory}
               >
                 Continuar minha jornada
