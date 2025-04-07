@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Question, quizQuestions, calculateHeroType, heroTypes } from '../utils/gameData';
 import { toast } from 'sonner';
-import { CheckCircle, Lightbulb, Zap, Heart, Shield } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 
 interface QuizProps {
   onComplete: (heroTypeId: string) => void;
@@ -14,37 +14,18 @@ const Quiz: React.FC<QuizProps> = ({ onComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<{[key: number]: string}>({});
   const [completed, setCompleted] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   
   const currentQuestion = quizQuestions[currentQuestionIndex];
   
-  // Animation icons for each option type
-  const getOptionIcon = (optionId: string) => {
-    // Each question has 4 options, we'll assign different icons based on the option ID
-    switch(optionId.charAt(optionId.length - 1)) {
-      case '1': return <Lightbulb className="h-6 w-6 animate-pulse text-yellow-400" />;
-      case '2': return <Zap className="h-6 w-6 animate-bounce text-blue-400" />;
-      case '3': return <Heart className="h-6 w-6 animate-pulse text-red-400" />;
-      case '4': return <Shield className="h-6 w-6 animate-pulse text-green-400" />;
-      default: return <Lightbulb className="h-6 w-6 animate-pulse text-yellow-400" />;
-    }
-  };
-
   const handleAnswer = (questionId: number, answerId: string) => {
-    setSelectedOption(answerId);
+    const newAnswers = { ...answers, [questionId]: answerId };
+    setAnswers(newAnswers);
     
-    // Delay to show the animation of selection
-    setTimeout(() => {
-      const newAnswers = { ...answers, [questionId]: answerId };
-      setAnswers(newAnswers);
-      
-      if (currentQuestionIndex < quizQuestions.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setSelectedOption(null);
-      } else {
-        calculateResult(newAnswers);
-      }
-    }, 800);
+    if (currentQuestionIndex < quizQuestions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      calculateResult(newAnswers);
+    }
   };
   
   const calculateResult = (finalAnswers: {[key: number]: string}) => {
@@ -78,17 +59,10 @@ const Quiz: React.FC<QuizProps> = ({ onComplete }) => {
                   <Button
                     key={option.id}
                     variant="outline"
-                    className={`w-full justify-start text-left h-auto py-4 border-hero-secondary/20 hover:bg-hero-primary/10 hover:border-hero-primary transition-all ${
-                      selectedOption === option.id ? 'bg-hero-primary/20 border-hero-primary' : ''
-                    }`}
+                    className="w-full justify-start text-left h-auto py-4 border-hero-secondary/20 hover:bg-hero-primary/10 hover:border-hero-primary transition-all"
                     onClick={() => handleAnswer(currentQuestion.id, option.id)}
                   >
-                    <div className="flex items-center gap-3 w-full">
-                      <div className="flex-shrink-0 bg-hero-dark/30 p-2 rounded-full">
-                        {getOptionIcon(option.id)}
-                      </div>
-                      <span>{option.text}</span>
-                    </div>
+                    {option.text}
                   </Button>
                 ))}
               </div>
@@ -116,26 +90,7 @@ const Quiz: React.FC<QuizProps> = ({ onComplete }) => {
           </CardFooter>
         </Card>
       ) : (
-        <div className="text-center p-10">
-          <div className="mb-6 flex justify-center">
-            <div className="animate-scale-in relative">
-              <div className="w-24 h-24 rounded-full bg-hero-primary/20 animate-pulse flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-hero-primary/40 animate-pulse flex items-center justify-center">
-                  <div className="w-8 h-8 rounded-full bg-hero-primary animate-pulse"></div>
-                </div>
-              </div>
-              <div className="absolute top-0 left-0 w-full h-full">
-                <span className="absolute animate-spin-slow" style={{ 
-                  top: "calc(50% - 40px)", 
-                  left: "calc(50% - 2px)", 
-                  width: "4px", 
-                  height: "40px", 
-                  backgroundColor: "#9b87f5", 
-                  transformOrigin: "bottom center"
-                }}></span>
-              </div>
-            </div>
-          </div>
+        <div className="text-center p-10 animate-pulse">
           <h3 className="text-2xl font-bold mb-2">Analisando suas respostas...</h3>
           <p className="text-muted-foreground">Descobrindo seu tipo de herói...</p>
         </div>
