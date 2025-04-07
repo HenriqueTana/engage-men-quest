@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import type { Mission as MissionType } from '../utils/gameData';
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,6 @@ const Mission: React.FC<MissionProps> = ({ mission, onComplete, completed, onEmo
       icon: <Award className="h-5 w-5" />
     });
     
-    // Recommend emotional health assessment after completing key missions
     if (mission.id === 6 || mission.id === 9) {
       toast.info("Sugestão: Faça uma avaliação de saúde emocional", {
         description: "Conhecer-se melhor pode ser o próximo passo da sua jornada.",

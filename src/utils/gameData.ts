@@ -1,4 +1,3 @@
-
 export interface Question {
   id: number;
   text: string;
@@ -23,11 +22,12 @@ export interface Mission {
   id: number;
   title: string;
   description: string;
-  type: "action" | "reflection" | "challenge";
+  type: "action" | "reflection" | "challenge" | "emotional";
   difficulty: "easy" | "medium" | "hard";
   points: number;
   completionMessage: string;
   requiredHeroTypes?: string[];
+  tags?: string[];
 }
 
 export interface Badge {
@@ -57,7 +57,6 @@ export interface StoryNode {
   isEnding?: boolean;
 }
 
-// Quiz questions to determine hero type
 export const quizQuestions: Question[] = [
   {
     id: 1,
@@ -139,7 +138,6 @@ export const quizQuestions: Question[] = [
   }
 ];
 
-// Hero archetypes
 export const heroTypes: { [key: string]: HeroType } = {
   warrior: {
     id: "warrior",
@@ -171,7 +169,6 @@ export const heroTypes: { [key: string]: HeroType } = {
   }
 };
 
-// Available missions
 export const missions: Mission[] = [
   {
     id: 1,
@@ -276,7 +273,6 @@ export const missions: Mission[] = [
   }
 ];
 
-// Achievements/badges
 export const badges: Badge[] = [
   {
     id: "first-step",
@@ -340,7 +336,6 @@ export const badges: Badge[] = [
   }
 ];
 
-// Interactive story nodes
 export const storyNodes: { [key: number]: StoryNode } = {
   1: {
     id: 1,
@@ -545,7 +540,6 @@ export const storyNodes: { [key: number]: StoryNode } = {
   }
 };
 
-// Calculate hero type based on quiz answers
 export const calculateHeroType = (answers: {[key: number]: string}) => {
   const scores: {[key: string]: number} = {
     warrior: 0,
@@ -579,7 +573,6 @@ export const calculateHeroType = (answers: {[key: number]: string}) => {
   return dominantType;
 };
 
-// Check if a badge is unlocked
 export const checkBadgeUnlocked = (
   badge: Badge, 
   completedMissions: number[], 
